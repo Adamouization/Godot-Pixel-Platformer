@@ -4,7 +4,7 @@
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
 
 [node name="World" type="Node2D"]
-position = Vector2( 0, 63 )
+position = Vector2( 0, 144 )
 
 [node name="Block" parent="." instance=ExtResource( 1 )]
 position = Vector2( 9, 9 )
@@ -37,4 +37,4 @@ position = Vector2( 117, -27 )
 position = Vector2( 135, -27 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 27, -12 )
+position = Vector2( 27, -126 )
