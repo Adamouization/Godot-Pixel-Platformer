@@ -12,23 +12,39 @@ var velocity = Vector2.ZERO
 # Delta = 1/60
 func _physics_process(delta):
 	# Gravity
-	velocity.y += 4
+	apply_gravity()
 	
 	# Move right/left
-	if Input.is_action_pressed("ui_right"):
-		velocity.x = 50
-	elif Input.is_action_pressed("ui_left"):
-		velocity.x = -50
+	var input = Vector2.ZERO
+	input.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	if input.x == 0:
+		apply_friction()
 	else:
-		velocity.x = 0
+		apply_acceleration(input.x)
+
 	
 	# Jump
-	if Input.is_action_just_pressed("ui_up"):
-		velocity.y = -120
+	if is_on_floor():
+		if Input.is_action_just_pressed("ui_up"):
+			velocity.y -= 120
+	else:
+		if Input.is_action_just_released("ui_up") and velocity.y < -30:
+			velocity.y -= 0
 	
 	# Update position
-	velocity = move_and_slide(velocity)
-	
+	velocity = move_and_slide(velocity, Vector2.UP)
+
+
+func apply_gravity():
+	velocity.y += 4
+
+
+func apply_friction():
+	velocity.x = move_toward(velocity.x, 0, 10)
+
+
+func apply_acceleration(amount):
+	velocity.x = move_toward(velocity.x, 50 * amount, 10)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
