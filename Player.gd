@@ -27,11 +27,13 @@ func _physics_process(delta):
 	# Move right/left
 	var input = Vector2.ZERO
 	input.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	
 	if input.x == 0:
 		apply_friction()
+		$AnimatedSprite.animation = "idle"  # same as get_node("AnimatedSprite")
 	else:
 		apply_acceleration(input.x)
-
+		$AnimatedSprite.animation = "run"
 	
 	# Jumping
 	# Big jump
@@ -40,6 +42,7 @@ func _physics_process(delta):
 			velocity.y = JUMP_HEIGHT
 	# Small jump
 	else:
+		$AnimatedSprite.animation = "jump"
 		if Input.is_action_just_released("ui_up") and velocity.y < JUMP_RELEASE_HEIGHT:
 			velocity.y = JUMP_RELEASE_HEIGHT
 		if velocity.y > 0:   # Just started falling (0 = apex)
