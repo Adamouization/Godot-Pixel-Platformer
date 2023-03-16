@@ -48,8 +48,16 @@ func _physics_process(delta):
 		if velocity.y > 0:   # Just started falling (0 = apex)
 			velocity.y += GRAVITY_ACC
 	
+	# Check if was jumping
+	var was_in_air = not is_on_floor()
+	
 	# Update position
 	velocity = move_and_slide(velocity, Vector2.UP)
+	
+	# Update animation to play correct frame when landing
+	if is_on_floor() and was_in_air:
+		$AnimatedSprite.animation = "run"
+		$AnimatedSprite.frame = 1
 
 
 func apply_gravity():

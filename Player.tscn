@@ -22,12 +22,12 @@ region = Rect2( 144, 0, 24, 24 )
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ SubResource( 1 ) ],
-"loop": true,
+"loop": false,
 "name": "idle",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 6 ) ],
-"loop": true,
+"loop": false,
 "name": "jump",
 "speed": 5.0
 }, {
@@ -45,7 +45,7 @@ script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
-animation = "jump"
+animation = "idle"
 playing = true
 flip_h = true
 
