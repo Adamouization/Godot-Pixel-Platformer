@@ -77,6 +77,8 @@ func _physics_process(delta):
 
 func apply_gravity():
 	velocity.y += GRAVITY
+	# set max gravity to prevent player from falling too fast
+	velocity.y = min(velocity.y, 300)
 
 
 func apply_friction():
