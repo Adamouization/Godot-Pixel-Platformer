@@ -7,7 +7,7 @@ var velocity = Vector2.ZERO
 
 
 # Constants
-export(int) var JUMP_HEIGHT = -160
+export(int) var JUMP_HEIGHT = -180
 export(int) var JUMP_RELEASE_HEIGHT = -35
 export(int) var MAX_SPEED = 75
 export(int) var ACCELERATION = 10
