@@ -2,7 +2,15 @@ extends KinematicBody2D
 class_name Player
 
 
-# Member variables declarations
+# Finite State Machine
+enum {
+	MOVE,  # set to 0
+	CLIMB,  # set to 1
+}
+
+
+# Global variabes
+var state = MOVE  # Default state
 var velocity = Vector2.ZERO
 
 
@@ -12,6 +20,7 @@ export(Resource) var move_data
 
 # Shortcuts
 onready var animatedSprite = $AnimatedSprite  # need onready else will run before node exists in scene
+onready var ladderDetection = $LadderDetection
 
 
 # Called when the node enters the scene tree for the first time.
@@ -23,12 +32,24 @@ func _ready():
 # Called during every physics frame of the game (default 60).
 # Delta = 1/60
 func _physics_process(delta):
-	# Gravity
-	apply_gravity()
-	
 	# Move right/left
 	var input = Vector2.ZERO
-	input.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	input.x =  Input.get_axis("ui_left", "ui_right")  # same as: Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	input.y = Input.get_axis("ui_up", "ui_down")
+	
+	# FSM
+	match state:
+		MOVE: move_state(input)
+		CLIMB: climb_state(input)
+
+
+func move_state(input):
+	# State transition
+	if is_on_ladder() and Input.is_action_pressed("ui_up"):
+		state = CLIMB
+	
+	# Gravity
+	apply_gravity()
 	
 	# Not moving = idle
 	if input.x == 0:
@@ -71,10 +92,24 @@ func _physics_process(delta):
 		animatedSprite.frame = 1
 
 
+func climb_state(input):
+	# State transition
+	if not is_on_ladder():
+		state = MOVE
+	
+	# Climbing animation
+	if input.length() != 0:  # moving up
+		animatedSprite.animation = "run"
+	else:  # not moving on ladder
+		animatedSprite.animation = "ide"
+	
+	velocity = input * 50
+	velocity = move_and_slide(velocity, Vector2.UP)
+
+
 func apply_gravity():
 	velocity.y += move_data.GRAVITY
-	# set max gravity to prevent player from falling too fast
-	velocity.y = min(velocity.y, 300)
+	velocity.y = min(velocity.y, 300)  # set max gravity 300 to prevent player from falling too fast
 
 
 func apply_friction():
@@ -83,8 +118,15 @@ func apply_friction():
 
 func apply_acceleration(amount):
 	velocity.x = move_toward(velocity.x, move_data.MAX_SPEED * amount, move_data.ACCELERATION)
-	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func is_on_ladder():
+	# Exit case #1: if not colliding at all, exit
+	if not ladderDetection.is_colliding():
+		return false
+		
+	# Exit case  #2: if collider colliding with is not a ladder, exit
+	if not ladderDetection.get_collider() is Ladder: 
+		return false
+	
+	return true
