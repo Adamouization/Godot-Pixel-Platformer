@@ -6,14 +6,8 @@ class_name Player
 var velocity = Vector2.ZERO
 
 
-# Constants
-export(int) var JUMP_HEIGHT = -180
-export(int) var JUMP_RELEASE_HEIGHT = -35
-export(int) var MAX_SPEED = 75
-export(int) var ACCELERATION = 10
-export(int) var FRICTION = 10
-export(int) var GRAVITY = 5
-export(int) var GRAVITY_ACC = 3
+# Player stats - imported from PlayerMovementData resource.
+export(Resource) var move_data
 
 
 # Shortcuts
@@ -23,6 +17,7 @@ onready var animatedSprite = $AnimatedSprite  # need onready else will run befor
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	animatedSprite.frames = load("res://PlayerYellowSkin.tres")
+	move_data = load("res://DefaultPlayerMovementData.tres")
 
 
 # Called during every physics frame of the game (default 60).
@@ -54,15 +49,15 @@ func _physics_process(delta):
 	# Big jump
 	if is_on_floor():
 		if Input.is_action_pressed("ui_up"):  # is_action_just_pressed to avoid bouncing directly by holding
-			velocity.y = JUMP_HEIGHT
+			velocity.y = move_data.JUMP_HEIGHT
 	# Small jump
 	else:
 		animatedSprite.animation = "jump"
-		if Input.is_action_just_released("ui_up") and velocity.y < JUMP_RELEASE_HEIGHT:
-			velocity.y = JUMP_RELEASE_HEIGHT
+		if Input.is_action_just_released("ui_up") and velocity.y < move_data.JUMP_RELEASE_HEIGHT:
+			velocity.y = move_data.JUMP_RELEASE_HEIGHT
 		if velocity.y > 0:   # Just started falling (0 = apex)
 			animatedSprite.animation = "idle"  # close legs when falling back down
-			velocity.y += GRAVITY_ACC
+			velocity.y += move_data.GRAVITY_ACC
 	
 	# Check if was jumping
 	var was_in_air = not is_on_floor()
@@ -77,17 +72,17 @@ func _physics_process(delta):
 
 
 func apply_gravity():
-	velocity.y += GRAVITY
+	velocity.y += move_data.GRAVITY
 	# set max gravity to prevent player from falling too fast
 	velocity.y = min(velocity.y, 300)
 
 
 func apply_friction():
-	velocity.x = move_toward(velocity.x, 0, FRICTION)
+	velocity.x = move_toward(velocity.x, 0, move_data.FRICTION)
 
 
 func apply_acceleration(amount):
-	velocity.x = move_toward(velocity.x, MAX_SPEED * amount, ACCELERATION)
+	velocity.x = move_toward(velocity.x, move_data.MAX_SPEED * amount, move_data.ACCELERATION)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
