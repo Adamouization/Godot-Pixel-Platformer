@@ -1,7 +1,7 @@
 extends KinematicBody2D
 class_name Player
 
-
+ 
 # Finite State Machine
 enum {
 	MOVE,  # set to 0
@@ -12,10 +12,11 @@ enum {
 # Global variabes
 var state = MOVE  # Default state
 var velocity = Vector2.ZERO
+var double_jump = 1  # number of double jumps
 
 
-# Player stats - imported from PlayerMovementData resource.
-export(Resource) var move_data
+# Player stats: imported from PlayerMovementData resource + cast as PlayerMovementData for auto-completion 
+export(Resource) var move_data = preload("res://DefaultPlayerMovementData.tres") as PlayerMovementData
 
 
 # Shortcuts
@@ -25,8 +26,8 @@ onready var ladderDetection = $LadderDetection
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Load sprite
 	animatedSprite.frames = load("res://PlayerYellowSkin.tres")
-	move_data = load("res://DefaultPlayerMovementData.tres")
 
 
 # Called during every physics frame of the game (default 60).
@@ -67,15 +68,27 @@ func move_state(input):
 			animatedSprite.flip_h = false  # faces left by default
 	
 	# Jumping
+	
 	# Big jump
 	if is_on_floor():
-		if Input.is_action_pressed("ui_up"):  # is_action_just_pressed to avoid bouncing directly by holding
+		# Reset double jump counter
+		double_jump = move_data.DOUBLE_JUMP_COUNT_MAX
+		
+		# is_action_just_pressed to avoid bouncing directly by holding
+		if Input.is_action_pressed("ui_up"):
 			velocity.y = move_data.JUMP_HEIGHT
-	# Small jump
+	
+	# Small jump (with release when in the air)
 	else:
 		animatedSprite.animation = "jump"
+		
 		if Input.is_action_just_released("ui_up") and velocity.y < move_data.JUMP_RELEASE_HEIGHT:
 			velocity.y = move_data.JUMP_RELEASE_HEIGHT
+		
+		if Input.is_action_just_pressed("ui_up") and double_jump > 0:
+			velocity.y = move_data.JUMP_HEIGHT
+			double_jump -= 1 
+		
 		if velocity.y > 0:   # Just started falling (0 = apex)
 			animatedSprite.animation = "idle"  # close legs when falling back down
 			velocity.y += move_data.GRAVITY_ACC
@@ -103,7 +116,7 @@ func climb_state(input):
 	else:  # not moving on ladder
 		animatedSprite.animation = "ide"
 	
-	velocity = input * 50
+	velocity = input * move_data.CLIMB_SPEED
 	velocity = move_and_slide(velocity, Vector2.UP)
 
 
