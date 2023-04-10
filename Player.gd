@@ -14,16 +14,18 @@ var state = MOVE  # Default state
 var velocity = Vector2.ZERO
 var double_jump = 1  # number of double jumps
 var buffered_jump = false
+var coyote_jump = false
 
 
 # Player stats: imported from PlayerMovementData resource + cast as PlayerMovementData for auto-completion 
-export(Resource) var move_data = preload("res://DefaultPlayerMovementData.tres") as PlayerMovementData
+export(Resource) var move_data = preload("res://FastPlayerMovementData.tres") as PlayerMovementData
  
 
 # Shortcuts (: for cast typing and auto-completion)
 onready var animatedSprite: = $AnimatedSprite  # need onready else will run before node exists in scene
 onready var ladderDetection: = $LadderDetection
 onready var jumpBufferTimer: = $JumpBufferTimer
+onready var coyoteJumpTimer: = $CoyoteJumpTimer
 
 
 # Called when the node enters the scene tree for the first time.
@@ -69,14 +71,14 @@ func move_state(input):
 		elif input.x < 0:
 			animatedSprite.flip_h = false  # faces left by default
 	
-	# Jumping
-	
-	# Big jump
-	if is_on_floor():
+	# Jumping (if on floor or coyote jump conditions are true)
+	if is_on_floor():  # Reset double jump counter if on floor
+		double_jump = move_data.DOUBLE_JUMP_COUNT_MAX
+	if can_jump():
 		# Reset double jump counter
 		double_jump = move_data.DOUBLE_JUMP_COUNT_MAX
 		
-		# is_action_just_pressed to avoid bouncing directly by holding or if a jump is buffered, then jump
+		# Jump (use is_action_just_pressed to avoid bouncing directly by holding or if a jump is buffered, then jump)
 		if Input.is_action_just_pressed("ui_up") or buffered_jump == true:
 			velocity.y = move_data.JUMP_HEIGHT
 			buffered_jump = false
@@ -85,23 +87,28 @@ func move_state(input):
 	else:
 		animatedSprite.animation = "jump"
 		
+		# Input jump release
 		if Input.is_action_just_released("ui_up") and velocity.y < move_data.JUMP_RELEASE_HEIGHT:
 			velocity.y = move_data.JUMP_RELEASE_HEIGHT
 		
+		# Input double jump
 		if Input.is_action_just_pressed("ui_up") and double_jump > 0:
 			velocity.y = move_data.JUMP_HEIGHT
 			double_jump -= 1 
 		
+		# Buffer jump
 		if Input.is_action_just_pressed("ui_up"):
 			buffered_jump = true
 			jumpBufferTimer.start()  # starts the timer
 		
+		# Fast fall
 		if velocity.y > 0:   # Just started falling (0 = apex)
 			animatedSprite.animation = "idle"  # close legs when falling back down
 			velocity.y += move_data.GRAVITY_ACC
 	
-	# Check if was jumping
+	# Check if was jumping or was on floor
 	var was_in_air = not is_on_floor()
+	var was_on_floor = is_on_floor()
 	
 	# Update position
 	velocity = move_and_slide(velocity, Vector2.UP)
@@ -110,6 +117,12 @@ func move_state(input):
 	if is_on_floor() and was_in_air:
 		animatedSprite.animation = "run"
 		animatedSprite.frame = 1
+	
+	# Coyote jump (left ledge and jumped)
+	var just_left_ground = (not is_on_floor()) and (was_on_floor)
+	if just_left_ground and velocity.y >= 0:
+		coyote_jump = true
+		coyoteJumpTimer.start()
 
 
 func climb_state(input):
@@ -125,6 +138,10 @@ func climb_state(input):
 	
 	velocity = input * move_data.CLIMB_SPEED
 	velocity = move_and_slide(velocity, Vector2.UP)
+
+
+func can_jump():
+	 return is_on_floor() or coyote_jump == true
 
 
 func apply_gravity():
@@ -154,3 +171,7 @@ func is_on_ladder():
 
 func _on_JumpBufferTimer_timeout():
 	 buffered_jump = false 
+
+
+func _on_CoyoteJumpTimer_timeout():
+	coyote_jump = false
