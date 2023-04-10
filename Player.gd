@@ -13,15 +13,17 @@ enum {
 var state = MOVE  # Default state
 var velocity = Vector2.ZERO
 var double_jump = 1  # number of double jumps
+var buffered_jump = false
 
 
 # Player stats: imported from PlayerMovementData resource + cast as PlayerMovementData for auto-completion 
 export(Resource) var move_data = preload("res://DefaultPlayerMovementData.tres") as PlayerMovementData
+ 
 
-
-# Shortcuts
-onready var animatedSprite = $AnimatedSprite  # need onready else will run before node exists in scene
-onready var ladderDetection = $LadderDetection
+# Shortcuts (: for cast typing and auto-completion)
+onready var animatedSprite: = $AnimatedSprite  # need onready else will run before node exists in scene
+onready var ladderDetection: = $LadderDetection
+onready var jumpBufferTimer: = $JumpBufferTimer
 
 
 # Called when the node enters the scene tree for the first time.
@@ -74,9 +76,10 @@ func move_state(input):
 		# Reset double jump counter
 		double_jump = move_data.DOUBLE_JUMP_COUNT_MAX
 		
-		# is_action_just_pressed to avoid bouncing directly by holding
-		if Input.is_action_pressed("ui_up"):
+		# is_action_just_pressed to avoid bouncing directly by holding or if a jump is buffered, then jump
+		if Input.is_action_just_pressed("ui_up") or buffered_jump == true:
 			velocity.y = move_data.JUMP_HEIGHT
+			buffered_jump = false
 	
 	# Small jump (with release when in the air)
 	else:
@@ -88,6 +91,10 @@ func move_state(input):
 		if Input.is_action_just_pressed("ui_up") and double_jump > 0:
 			velocity.y = move_data.JUMP_HEIGHT
 			double_jump -= 1 
+		
+		if Input.is_action_just_pressed("ui_up"):
+			buffered_jump = true
+			jumpBufferTimer.start()  # starts the timer
 		
 		if velocity.y > 0:   # Just started falling (0 = apex)
 			animatedSprite.animation = "idle"  # close legs when falling back down
@@ -143,3 +150,7 @@ func is_on_ladder():
 		return false
 	
 	return true
+
+
+func _on_JumpBufferTimer_timeout():
+	 buffered_jump = false 
