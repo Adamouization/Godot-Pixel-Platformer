@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://TileMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
@@ -10,7 +10,7 @@
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 120, -1, 0, 0, 0, 0, 120, -53, 0, 0, 0, 0, 35.0574, -51.394, 0, 0, 0, 0, -1, -52, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 120, -1 )
+"points": PoolVector2Array( 0, 0, 0, 0, 125, -2, 0, 0, 0, 0, 125, -56, 0, 0, 0, 0, -1, -56, 0, 0, 0, 0, -1, -2, 0, 0, 0, 0, 125, -2 )
 }
 
 [sub_resource type="Curve2D" id=5]
@@ -18,60 +18,12 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 18, -54, 0, 0, 0, 0, 117, -54 )
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "MoveAlong2DPathBounce"
-length = 4.0
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("PathFollow2D:unit_offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 2, 4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ 0.0, 1.0, 0.0 ]
-}
-
-[sub_resource type="Animation" id=3]
-resource_name = "MoveAlong2DPathLoop"
-length = 8.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("PathFollow2D:unit_offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 8 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 0.0, 1.0 ]
-}
-
-[sub_resource type="Animation" id=4]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath("PathFollow2D:unit_offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 1.0 ]
-}
-
 [node name="World" type="Node2D"]
 position = Vector2( 23, 142 )
 script = ExtResource( 4 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( -45, -102 )
+position = Vector2( 490, -151 )
 z_index = 10
 
 [node name="TileMap" parent="." instance=ExtResource( 1 )]
@@ -85,6 +37,9 @@ position = Vector2( 135, -72 )
 
 [node name="WalkingEnemy" parent="." instance=ExtResource( 5 )]
 position = Vector2( 1, -71 )
+
+[node name="WalkingEnemy2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 31, 38 )
 
 [node name="Ladder" parent="." instance=ExtResource( 6 )]
 position = Vector2( 180, -144 )
@@ -105,15 +60,5 @@ curve = SubResource( 1 )
 [node name="SpikeBallEnemy2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 508, -142 )
 curve = SubResource( 5 )
-
-[node name="PathFollow2D" parent="SpikeBallEnemy2" index="0"]
-position = Vector2( 117, -54 )
-offset = 99.0655
-
-[node name="AnimationPlayer" parent="SpikeBallEnemy2" index="1"]
-autoplay = "MoveAlong2DPathBounce"
-anims/MoveAlong2DPathBounce = SubResource( 2 )
-anims/MoveAlong2DPathLoop = SubResource( 3 )
-anims/RESET = SubResource( 4 )
-
-[editable path="SpikeBallEnemy2"]
+animation_type = 1
+animation_speed = 2
