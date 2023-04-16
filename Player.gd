@@ -80,6 +80,7 @@ func move_state(input):
 		
 		# Jump (use is_action_just_pressed to avoid bouncing directly by holding or if a jump is buffered, then jump)
 		if Input.is_action_just_pressed("ui_up") or buffered_jump == true:
+			SoundPlayer.play_sound(SoundPlayer.JUMP)
 			velocity.y = move_data.JUMP_HEIGHT
 			buffered_jump = false
 	
@@ -93,6 +94,7 @@ func move_state(input):
 		
 		# Input double jump
 		if Input.is_action_just_pressed("ui_up") and double_jump > 0:
+			SoundPlayer.play_sound(SoundPlayer.JUMP)
 			velocity.y = move_data.JUMP_HEIGHT
 			double_jump -= 1 
 		
@@ -167,6 +169,11 @@ func is_on_ladder():
 		return false
 	
 	return true
+
+
+func die():
+	SoundPlayer.play_sound(SoundPlayer.HURT)
+	get_tree().reload_current_scene()
 
 
 func _on_JumpBufferTimer_timeout():
