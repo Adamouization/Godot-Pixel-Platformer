@@ -26,6 +26,7 @@ onready var animatedSprite: = $AnimatedSprite  # need onready else will run befo
 onready var ladderDetection: = $LadderDetection
 onready var jumpBufferTimer: = $JumpBufferTimer
 onready var coyoteJumpTimer: = $CoyoteJumpTimer
+onready var remoteTransform: = $RemoteTransform2D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -173,7 +174,16 @@ func is_on_ladder():
 
 func die():
 	SoundPlayer.play_sound(SoundPlayer.HURT)
-	get_tree().reload_current_scene()
+	
+	queue_free()
+	# get_tree().reload_current_scene()
+	
+	Events.emit_signal("player_died")
+
+
+func connect_camera(camera):
+	var camera_path = camera.get_path()
+	remoteTransform.remote_path = camera_path
 
 
 func _on_JumpBufferTimer_timeout():

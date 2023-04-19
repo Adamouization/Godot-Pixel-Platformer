@@ -20,11 +20,6 @@ flip_h = true
 position = Vector2( 0, 3.25 )
 shape = SubResource( 3 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-smoothing_enabled = true
-smoothing_speed = 7.0
-
 [node name="LadderDetection" type="RayCast2D" parent="."]
 position = Vector2( 0, -3 )
 enabled = true
@@ -37,6 +32,8 @@ wait_time = 0.15
 one_shot = true
 
 [node name="CoyoteJumpTimer" type="Timer" parent="."]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
 
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_JumpBufferTimer_timeout"]
 [connection signal="timeout" from="CoyoteJumpTimer" to="." method="_on_CoyoteJumpTimer_timeout"]

@@ -65,3 +65,10 @@ position = Vector2( 508, -142 )
 curve = SubResource( 5 )
 animation_type = 1
 animation_speed = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+smoothing_enabled = true
+smoothing_speed = 7.0
+
+[node name="Timer" type="Timer" parent="."]
