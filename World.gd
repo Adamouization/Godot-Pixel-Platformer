@@ -16,10 +16,16 @@ onready var timer: = $Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Background colour
 	VisualServer.set_default_clear_color(Color.dodgerblue)
+	
+	# Attach camera to player and set spawn location to player
 	player.connect_camera(camera)
-	player_spawn_location = player.global_position
+	player_spawn_location = player.position
+	
+	# Connect events
 	Events.connect("player_died", self, "_on_player_died")
+	Events.connect("checkpoint_reached", self, "on_checkpoint_reached")
 
 
 func _on_player_died():
@@ -29,6 +35,10 @@ func _on_player_died():
 	
 	# Create new player instance and add it to world
 	var player = player_scene.instance()
+	player.position = player_spawn_location	
 	add_child(player)
-	player.global_position = player_spawn_location	
 	player.connect_camera(camera)
+
+
+func on_checkpoint_reached(position):
+	player_spawn_location = position
