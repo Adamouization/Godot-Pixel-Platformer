@@ -55,6 +55,7 @@ func fall_state(delta):
 	
 	# Check collision with floor
 	if ray_cast.is_colliding():
+		SoundPlayer.play_sound(SoundPlayer.STOMP_IMPACT)
 		var collision_point = ray_cast.get_collision_point()
 #		position.y = collision_point.y
 		state = LAND

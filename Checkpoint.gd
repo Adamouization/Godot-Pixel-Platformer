@@ -17,6 +17,7 @@ func _on_Checkpoint_body_entered(body):
 		return
 	
 	# Play animation
+	SoundPlayer.play_sound(SoundPlayer.CHECKPOINT)
 	animatedSprite.play("checked")
 	
 	# Save location as new spawn
