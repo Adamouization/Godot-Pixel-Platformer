@@ -137,7 +137,7 @@ func climb_state(input):
 	if input.length() != 0:  # moving up
 		animatedSprite.animation = "run"
 	else:  # not moving on ladder
-		animatedSprite.animation = "ide"
+		animatedSprite.animation = "idle"
 	
 	velocity = input * move_data.CLIMB_SPEED
 	velocity = move_and_slide(velocity, Vector2.UP)

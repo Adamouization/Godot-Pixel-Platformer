@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://TileMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Ladder.tscn" type="PackedScene" id=6]
 [ext_resource path="res://SpikeBallEnemy.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Checkpoint.tscn" type="PackedScene" id=8]
+[ext_resource path="res://StompEnemy.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -34,7 +35,7 @@ position = Vector2( 23, 142 )
 script = ExtResource( 4 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( -68, -133 )
+position = Vector2( -77, -124 )
 z_index = 10
 
 [node name="TileMap" parent="." instance=ExtResource( 1 )]
@@ -50,7 +51,7 @@ position = Vector2( 135, -72 )
 position = Vector2( 1, -71 )
 
 [node name="WalkingEnemy2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 31, 38 )
+position = Vector2( 148, 56 )
 
 [node name="WalkingEnemy3" parent="." instance=ExtResource( 5 )]
 position = Vector2( 211, -196 )
@@ -102,3 +103,6 @@ position = Vector2( 94, -88 )
 
 [node name="Checkpoint2" parent="." instance=ExtResource( 8 )]
 position = Vector2( 1111, -304 )
+
+[node name="StompEnemy" parent="." instance=ExtResource( 9 )]
+position = Vector2( -104, -187 )
