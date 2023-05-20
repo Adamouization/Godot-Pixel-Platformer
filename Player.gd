@@ -45,25 +45,25 @@ func _physics_process(delta):
 	
 	# FSM
 	match state:
-		MOVE: move_state(input)
+		MOVE: move_state(input, delta)
 		CLIMB: climb_state(input)
 
 
-func move_state(input):
+func move_state(input, delta):
 	# State transition
 	if is_on_ladder() and Input.is_action_pressed("ui_up"):
 		state = CLIMB
 	
 	# Gravity
-	apply_gravity()
+	apply_gravity(delta)
 	
 	# Not moving = idle
 	if input.x == 0:
-		apply_friction()
+		apply_friction(delta)
 		animatedSprite.animation = "idle"  # same as get_node("AnimatedSprite")
 	# Moving = running
 	else:
-		apply_acceleration(input.x)
+		apply_acceleration(input.x, delta)
 		animatedSprite.animation = "run"
 		
 		# Turn player in the direction of movement
@@ -107,7 +107,7 @@ func move_state(input):
 		# Fast fall
 		if velocity.y > 0:   # Just started falling (0 = apex)
 			animatedSprite.animation = "idle"  # close legs when falling back down
-			velocity.y += move_data.GRAVITY_ACC
+			velocity.y += move_data.GRAVITY_ACC * delta
 	
 	# Check if was jumping or was on floor
 	var was_in_air = not is_on_floor()
@@ -147,17 +147,17 @@ func can_jump():
 	 return is_on_floor() or coyote_jump == true
 
 
-func apply_gravity():
-	velocity.y += move_data.GRAVITY
+func apply_gravity(delta):
+	velocity.y += move_data.GRAVITY * delta
 	velocity.y = min(velocity.y, 300)  # set max gravity 300 to prevent player from falling too fast
 
 
-func apply_friction():
-	velocity.x = move_toward(velocity.x, 0, move_data.FRICTION)
+func apply_friction(delta):
+	velocity.x = move_toward(velocity.x, 0, move_data.FRICTION * delta)
 
 
-func apply_acceleration(amount):
-	velocity.x = move_toward(velocity.x, move_data.MAX_SPEED * amount, move_data.ACCELERATION)
+func apply_acceleration(amount, delta):
+	velocity.x = move_toward(velocity.x, move_data.MAX_SPEED * amount, move_data.ACCELERATION * delta)
 
 
 func is_on_ladder():
