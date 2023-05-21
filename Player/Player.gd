@@ -19,7 +19,7 @@ var coyote_jump = false
 
 # Player stats: imported from PlayerMovementData resource + cast as PlayerMovementData for auto-completion 
 export(Resource) var move_data = preload("res://Player/FastPlayerMovementData.tres") as PlayerMovementData
- 
+
 
 # Shortcuts (: for cast typing and auto-completion)
 onready var animatedSprite: = $AnimatedSprite  # need onready else will run before node exists in scene
@@ -42,6 +42,10 @@ func _physics_process(delta):
 	var input = Vector2.ZERO
 	input.x =  Input.get_axis("ui_left", "ui_right")  # same as: Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input.y = Input.get_axis("ui_up", "ui_down")
+	
+	# Prevent player from falling to infinite
+	if position.y > 300:
+		die()
 	
 	# FSM
 	match state:

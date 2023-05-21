@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/PlayerYellowSkin.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://Player/FastPlayerMovementData.tres" type="Resource" id=3]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 7, 8.75 )
@@ -10,6 +11,7 @@ extents = Vector2( 7, 8.75 )
 z_index = 10
 collision_layer = 2
 script = ExtResource( 1 )
+move_data = ExtResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12 )
