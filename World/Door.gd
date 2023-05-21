@@ -13,5 +13,12 @@ func _on_Door_body_entered(body):
 	if target_level_path.empty():
 		return
 	
+	# Level transition animation
+	LevelTransition.play_exit_level_transition()
+	get_tree().paused = true  # pause game
+	yield(LevelTransition, "transition_completed")  # wait for transition to finish
+	LevelTransition.play_enter_level_transition()
+	get_tree().paused = false  # resume game
+	
 	# Change to a new scene defined in an instance of the door in a scene
 	get_tree().change_scene(target_level_path)

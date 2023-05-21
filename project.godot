@@ -44,6 +44,7 @@ default_bus_layout="res://Sounds/default_bus_layout.tres"
 
 SoundPlayer="*res://Sounds/SoundPlayer.tscn"
 Events="*res://Events.gd"
+LevelTransition="*res://Levels/Level_Transition.tscn"
 
 [display]
 
