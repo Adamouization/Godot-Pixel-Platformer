@@ -1,7 +1,7 @@
 extends Node2D
 
 # Instantiate a new scene
-const player_scene = preload("res://Player.tscn")
+const player_scene = preload("res://Player/Player.tscn")
 
 
 # Constants
@@ -18,7 +18,7 @@ onready var timer: = $Timer
 func _ready():
 	# Background colour
 	VisualServer.set_default_clear_color(Color.dodgerblue)
-	
+	 
 	# Attach camera to player and set spawn location to player
 	player.connect_camera(camera)
 	player_spawn_location = player.position

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://PlayerYellowSkin.tres" type="SpriteFrames" id=1]
-[ext_resource path="res://Player.gd" type="Script" id=2]
+[ext_resource path="res://Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Player/PlayerYellowSkin.tres" type="SpriteFrames" id=2]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 7, 8.75 )
@@ -9,11 +9,11 @@ extents = Vector2( 7, 8.75 )
 [node name="Player" type="KinematicBody2D"]
 z_index = 10
 collision_layer = 2
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12 )
-frames = ExtResource( 1 )
+frames = ExtResource( 2 )
 animation = "idle"
 playing = true
 flip_h = true
