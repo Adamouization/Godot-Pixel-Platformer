@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
-[ext_resource path="res://Player/PlayerYellowSkin.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://Player/FastPlayerMovementData.tres" type="Resource" id=3]
+[ext_resource path="res://Player/Skins/PlayerYellowSkin.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://Player/Player_Characteristics_Data/FastPlayerMovementData.tres" type="Resource" id=3]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 7, 8.75 )

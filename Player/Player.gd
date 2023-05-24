@@ -18,7 +18,7 @@ var coyote_jump = false
 
 
 # Player stats: imported from PlayerMovementData resource + cast as PlayerMovementData for auto-completion 
-export(Resource) var move_data = preload("res://Player/FastPlayerMovementData.tres") as PlayerMovementData
+export(Resource) var move_data = preload("res://Player/Player_Characteristics_Data/FastPlayerMovementData.tres") as PlayerMovementData
 
 
 # Shortcuts (: for cast typing and auto-completion)
@@ -32,7 +32,7 @@ onready var remoteTransform: = $RemoteTransform2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Load sprite
-	animatedSprite.frames = load("res://Player/PlayerYellowSkin.tres")
+	animatedSprite.frames = load("res://Player/Skins/PlayerYellowSkin.tres")
 
 
 # Called during every physics frame of the game (default 60).
