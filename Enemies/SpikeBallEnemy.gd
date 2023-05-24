@@ -8,7 +8,7 @@ enum AMIMATION_TYPE {
 }
 
 
-# Export vards
+# Export vars
 export(AMIMATION_TYPE) var animation_type setget set_animation_type
 export(int) var animation_speed = 1
 
