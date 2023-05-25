@@ -1,3 +1,4 @@
+# warning-ignore:return_value_discarded
 extends Area2D
 
 
@@ -7,7 +8,7 @@ export (String, FILE, "*.tscn") var target_level_path = ""
 var player = false
 
 
-func _process(delta):
+func _process(_delta):
 	# Don't exit level if player is not over the door
 	if not player:
 		return

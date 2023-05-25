@@ -15,5 +15,5 @@ func play_enter_level_transition():
 	animation_player.play("Enter_Level")
 
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(_anim_name):
 	emit_signal("transition_completed")

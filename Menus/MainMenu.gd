@@ -24,11 +24,13 @@ func _ready():
 
 func _on_New_Game_Button_button_up():
 	# Start game with level 1
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(main_game_scene.resource_path)
 
 
 func _on_Made_By_Button_pressed():
 	# Redirect to website
+	# warning-ignore:return_value_discarded
 	OS.shell_open("http://www.adam.jaamour.com/")
 
 

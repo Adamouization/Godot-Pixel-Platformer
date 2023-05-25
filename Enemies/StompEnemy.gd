@@ -17,7 +17,6 @@ onready var timer := $Timer
 onready var ray_cast := $RayCast2D
 onready var animated_sprite := $AnimatedSprite
 onready var particles := $Particles2D
-onready var player = get_node("res://Player/Player.tscn")
 
 
 export(int) var FALL_SPEED = 150
@@ -69,7 +68,7 @@ func fall_state(delta):
 		# If player close enough to enemy, play sound (don't play if out of screen)
 		if is_player_close:
 			SoundPlayer.play_sound(SoundPlayer.STOMP_IMPACT)
-		var collision_point = ray_cast.get_collision_point()
+#		var collision_point = ray_cast.get_collision_point()
 #		position.y = collision_point.y
 		state = LAND
 		

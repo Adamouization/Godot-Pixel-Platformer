@@ -1,3 +1,4 @@
+# warning-ignore:return_value_discarded
 extends KinematicBody2D
 
 
@@ -14,7 +15,7 @@ onready var sprite = $AnimatedSprite
 
 # Called during every physics frame of the game (default 60).
 # Delta = 1/60
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Detect wall collisions or ledges
 	var is_found_wall = is_on_wall()
 	var is_found_ledge = (not LedgeCheckRight.is_colliding()) or (not LedgeCheckLeft.is_colliding())

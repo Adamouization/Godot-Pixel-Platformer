@@ -24,7 +24,9 @@ func _ready():
 	player_spawn_location = player.position
 	
 	# Connect events
+	# warning-ignore:return_value_discarded
 	Events.connect("player_died", self, "_on_player_died")
+	# warning-ignore:return_value_discarded
 	Events.connect("checkpoint_reached", self, "on_checkpoint_reached")
 
 
@@ -34,10 +36,10 @@ func _on_player_died():
 	yield(timer, "timeout")
 	
 	# Create new player instance and add it to world
-	var player = player_scene.instance()
-	player.position = player_spawn_location	
-	add_child(player)
-	player.connect_camera(camera)
+	var player_instance = player_scene.instance()
+	player_instance.position = player_spawn_location	
+	add_child(player_instance)
+	player_instance.connect_camera(camera)
 
 
 func on_checkpoint_reached(position):
