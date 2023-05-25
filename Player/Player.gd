@@ -32,7 +32,7 @@ onready var remoteTransform: = $RemoteTransform2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Load sprite
-	animatedSprite.frames = load("res://Player/Skins/PlayerYellowSkin.tres")
+	animatedSprite.frames = load(Gloval_Variables.player_skin_path)
 
 
 # Called during every physics frame of the game (default 60).
