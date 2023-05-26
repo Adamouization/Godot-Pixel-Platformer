@@ -161,7 +161,10 @@ func apply_friction(delta):
 
 
 func apply_acceleration(amount, delta):
-	velocity.x = move_toward(velocity.x, move_data.MAX_SPEED * amount, move_data.ACCELERATION * delta)
+	if Input.is_action_pressed("sprint"):
+		velocity.x = move_toward(velocity.x, move_data.MAX_SPEED_SPRINT * amount, move_data.ACCELERATION * delta)
+	else:
+		velocity.x = move_toward(velocity.x, move_data.MAX_SPEED * amount, move_data.ACCELERATION * delta)
 
 
 func is_on_ladder():
