@@ -4,6 +4,7 @@ extends Node2D
 export var main_game_scene : PackedScene
 
 
+onready var background: = $Background
 onready var animated_sprite: = $AnimatedSprite  # need onready else will run before node exists in scene
 
 
@@ -13,6 +14,8 @@ var skins_lst = []
 
 
 func _ready():
+	background.color = Color.dodgerblue
+	
 	# Load frames with default character skin
 	animated_sprite.frames = load(Gloval_Variables.player_skin_path)
 	animated_sprite.animation = "run"
@@ -23,18 +26,21 @@ func _ready():
 
 
 func _on_New_Game_Button_button_up():
+	SoundPlayer.play_sound(SoundPlayer.UI_CLICK)
 	# Start game with level 1
 	# warning-ignore:return_value_discarded
 	get_tree().change_scene(main_game_scene.resource_path)
 
 
 func _on_Made_By_Button_pressed():
+	SoundPlayer.play_sound(SoundPlayer.UI_CLICK)
 	# Redirect to website
 	# warning-ignore:return_value_discarded
 	OS.shell_open("http://www.adam.jaamour.com/")
 
 
 func _on_Skin_Button_button_up():
+	SoundPlayer.play_sound(SoundPlayer.UI_CLICK)
 	# Update index from list of skins
 	if current_skin_index >= len(skins_lst) - 1:
 		current_skin_index = 0
