@@ -8,6 +8,7 @@ export (String, FILE, "*.tscn") var target_level_path = ""
 var player = false
 
 
+
 func _process(_delta):
 	# Don't exit level if player is not over the door
 	if not player:

@@ -34,7 +34,7 @@ _data = {
 position = Vector2( -27, 9 )
 
 [node name="Player" parent="." index="0"]
-position = Vector2( -90, -126 )
+position = Vector2( -63, 54 )
 
 [node name="Camera2D" parent="." index="1"]
 process_mode = 0
